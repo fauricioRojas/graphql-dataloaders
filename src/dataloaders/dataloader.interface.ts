@@ -4,4 +4,5 @@ export interface IDataloaders {
   countryLoader: Dataloader<any, any>;
   playerLoader: Dataloader<any, any>;
   personLoader: Dataloader<any, any>;
+  clubLoader: Dataloader<any, any>;
 }

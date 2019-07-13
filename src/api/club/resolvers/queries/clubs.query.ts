@@ -10,10 +10,7 @@ const clubs = async (
   context: IContext,
   info: GraphQLResolveInfo
 ): Promise<Club[]> => {
-  console.log('******** Hey!');
   const fields = getQueryFields<Array<keyof Club>>(info);
-  console.log('fields: ', fields);
-  console.log('fields 0: ', [...new Set([...fields, Club.keyFields])]);
   const { connection, entities } = context.datasources.typeORM;
   return connection.manager.find(entities.Club, {
     take,
