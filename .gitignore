@@ -1,0 +1,11 @@
+schema.ts
+node_modules
+yarn.lock
+yarn-error.log
+serviceAccountKey.json
+dist
+build
+.env
+
+# Ignore .vscode config
+.vscode

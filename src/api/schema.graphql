@@ -1,0 +1,5 @@
+# import * from "./person/schemas/people.graphql"
+
+type Query {
+  people(take: Int): [People!]!
+}

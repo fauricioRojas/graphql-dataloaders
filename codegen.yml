@@ -1,0 +1,12 @@
+overwrite: true
+schema:
+  - src/api/**/*.graphql
+generates:
+  src/types/schema.ts:
+    schema:
+    documents: src/api/**/*.graphql
+    plugins:
+      - typescript-common
+      - typescript-server
+    config:
+      noNamespaces: true

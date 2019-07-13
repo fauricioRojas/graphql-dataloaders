@@ -1,0 +1,9 @@
+{
+  "watch": ["src"],
+  "ext": "ts, graphql",
+  "ignore": ["src/**/*.test.ts", "src/types/schema.ts"],
+  "exec": "npm start",
+  "events": {
+    "restart": "npm run rundev"
+  }
+}
