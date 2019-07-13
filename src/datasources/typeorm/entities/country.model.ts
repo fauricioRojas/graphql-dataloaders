@@ -39,5 +39,5 @@ export class Country {
     () => Person,
     person => person.country
   )
-  public people: Promise<Person[]>; 
+  public people: Promise<Person[]>;
 }

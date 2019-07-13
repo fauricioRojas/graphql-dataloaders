@@ -1,0 +1,5 @@
+type Position {
+  id: Int!
+  name: String!
+  code: String!
+}

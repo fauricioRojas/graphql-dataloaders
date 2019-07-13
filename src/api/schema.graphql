@@ -6,6 +6,8 @@
 
 # import * from "./country/schemas/country.graphql"
 
+# import * from "./position/schemas/position.graphql"
+
 type Query {
   people(take: Int): [Person!]!
   
@@ -14,4 +16,6 @@ type Query {
   players(take: Int): [Player!]!
 
   countries(take: Int): [Country!]!
+
+  positions(take: Int): [Position!]!
 }
