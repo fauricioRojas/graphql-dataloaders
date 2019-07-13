@@ -5,7 +5,7 @@ import { PeopleQueryArgs } from '../../../../types/schema';
 import { getQueryFields } from '../../../../common/services/query-fields.service';
 
 const people = async (
-  parent,
+  parent: any,
   { take }: PeopleQueryArgs,
   context: IContext,
   info: GraphQLResolveInfo

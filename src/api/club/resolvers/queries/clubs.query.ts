@@ -5,7 +5,7 @@ import { ClubsQueryArgs } from '../../../../types/schema';
 import { getQueryFields } from '../../../../common/services/query-fields.service';
 
 const clubs = async (
-  parent,
+  parent: any,
   { take }: ClubsQueryArgs,
   context: IContext,
   info: GraphQLResolveInfo

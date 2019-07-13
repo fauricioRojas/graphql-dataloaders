@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Country } from './country.model';
 import { ClubPlayer } from './club-player.model';
+import { Player } from './player.model';
 
 @Entity('club', { schema: 'soccer' })
 @Index('country_id_idx', ['country'])
@@ -26,9 +27,8 @@ export class Club {
   public countryId: number;
 
   @ManyToOne(
-    type => Country,
-    country => country.clubs,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => Country,
+    country => country.clubs
   )
   @JoinColumn({ name: 'country_id' })
   public country: Promise<Country | null>;
@@ -41,11 +41,10 @@ export class Club {
   public name: string;
 
   @OneToMany(
-    type => ClubPlayer,
-    clubPlayer => clubPlayer.club,
-    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => ClubPlayer,
+    clubPlayer => clubPlayer.club
   )
-  public clubPlayers: Promise<ClubPlayer[]>;
+  public players: Promise<Player[]>;
 
   public static keyFields: Array<keyof Club> = ['id', 'countryId'];
 }

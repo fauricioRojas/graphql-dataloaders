@@ -26,8 +26,11 @@ export class Person {
   })
   public countryId: number;
 
-  @ManyToOne(() => Country)
-  @JoinColumn()
+  @ManyToOne(
+    () => Country,
+    country => country.people
+  )
+  @JoinColumn({ name: 'country_id' })
   public country: Promise<Country>;
 
   @Column('varchar', {

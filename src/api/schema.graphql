@@ -4,10 +4,14 @@
 
 # import * from "./player/schemas/player.graphql"
 
+# import * from "./country/schemas/country.graphql"
+
 type Query {
   people(take: Int): [Person!]!
   
   clubs(take: Int): [Club!]!
 
   players(take: Int): [Player!]!
+
+  countries(take: Int): [Country!]!
 }

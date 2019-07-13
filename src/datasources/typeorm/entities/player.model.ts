@@ -45,11 +45,10 @@ export class Player {
   public active: number;
 
   @OneToMany(
-    type => ClubPlayer,
-    clubPlayer => clubPlayer.player,
-    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => ClubPlayer,
+    clubPlayer => clubPlayer.player
   )
-  public clubPlayers: Promise<ClubPlayer[]>;
+  public clubs: Promise<ClubPlayer[]>;
 
   @OneToMany(
     () => PlayerPosition,

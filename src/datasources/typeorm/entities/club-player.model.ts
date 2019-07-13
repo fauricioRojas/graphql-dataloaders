@@ -19,17 +19,29 @@ export class ClubPlayer {
   })
   public id: number;
 
+  @Column({
+    type: 'int',
+    name: 'club_id'
+  })
+  public clubId: number;
+
   @ManyToOne(
-    type => Club,
-    club => club.clubPlayers,
+    () => Club,
+    club => club.players,
     { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   @JoinColumn({ name: 'club_id' })
   public club: Promise<Club | null>;
 
+  @Column({
+    type: 'int',
+    name: 'player_id'
+  })
+  public playerId: number;
+
   @ManyToOne(
-    type => Player,
-    player => player.clubPlayers,
+    () => Player,
+    player => player.clubs,
     { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   @JoinColumn({ name: 'player_id' })

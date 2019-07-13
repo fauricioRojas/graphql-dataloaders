@@ -5,7 +5,7 @@ import { PlayersQueryArgs } from '../../../../types/schema';
 import { getQueryFields } from '../../../../common/services/query-fields.service';
 
 const players = async (
-  parent,
+  parent: any,
   { take }: PlayersQueryArgs,
   context: IContext,
   info: GraphQLResolveInfo

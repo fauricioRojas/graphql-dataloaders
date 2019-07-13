@@ -1,11 +1,13 @@
 import clubModule from '../api/club/resolvers/club.index';
 import personModule from '../api/person/resolvers/person.index';
 import playerModule from '../api/player/resolvers/player.index';
+import countryModule from '../api/country/resolvers/country.index';
 import { generateDataloaderResolver } from '../dataloaders';
 
 export const resolvers = {
   Query: {
     ...clubModule.queries,
+    ...countryModule.queries,
     ...personModule.queries,
     ...playerModule.queries,
   },
@@ -18,8 +20,10 @@ export const resolvers = {
   },
   Club: {
     country: generateDataloaderResolver('countryLoader', 'countryId', false),
+    players: generateDataloaderResolver('clubPlayerLoader', 'id', true),
   },
   Country: {
     clubs: generateDataloaderResolver('clubLoader', 'id', true),
+    people: generateDataloaderResolver('personInCountryLoader', 'id', true),
   }
 };
