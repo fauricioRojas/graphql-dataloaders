@@ -1,0 +1,8 @@
+# import * from "./../../person/schemas/person.graphql"
+
+type Player {
+  id: Int!
+  foot: String!
+  active: Boolean!
+  person: Person!
+}

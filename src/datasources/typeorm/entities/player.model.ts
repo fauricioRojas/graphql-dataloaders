@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  OneToOne,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn
@@ -20,13 +21,15 @@ export class Player {
   })
   public id: number;
 
-  @ManyToOne(
-    type => Person,
-    person => person.players,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
-  )
+  @Column({
+    type: 'int',
+    name: 'person_id'
+  })
+  public personId: number;
+
+  @OneToOne(() => Person)
   @JoinColumn({ name: 'person_id' })
-  public person: Promise<Person | null>;
+  public person: Promise<Person>;
 
   @Column('varchar', {
     nullable: false,
@@ -49,9 +52,11 @@ export class Player {
   public clubPlayers: Promise<ClubPlayer[]>;
 
   @OneToMany(
-    type => PlayerPosition,
+    () => PlayerPosition,
     playerPosition => playerPosition.player,
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   public playerPositions: Promise<PlayerPosition[]>;
+
+  public static keyFields: Array<keyof Player> = ['id', 'personId'];
 }

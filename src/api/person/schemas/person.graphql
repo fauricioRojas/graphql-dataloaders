@@ -1,8 +1,10 @@
 # import * from "./../../country/schemas/country.graphql"
+# import * from "./../../player/schemas/player.graphql"
 
 type Person {
   id: Int!
   country: Country!
   firstName: String!
   lastName: String
+  player: Player!
 }

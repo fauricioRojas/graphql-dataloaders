@@ -30,14 +30,14 @@ export class Country {
   public code: string;
 
   @OneToMany(
-    type => Club,
+    () => Club,
     club => club.country,
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   public clubs: Promise<Club[]>;
 
   @OneToMany(
-    type => Person,
+    () => Person,
     person => person.country,
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )

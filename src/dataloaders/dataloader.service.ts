@@ -2,19 +2,29 @@ import { IDataloaders } from './dataloader.interface';
 import { In, FindManyOptions, ObjectType } from 'typeorm';
 import { IDatasources } from '../datasources/index';
 import { Country } from '../datasources/typeorm/entities/country.model';
-import * as DataloaderLibrary from 'dataloader';
+import { Player } from '../datasources/typeorm/entities/player.model';
+import * as Dataloader from 'dataloader';
+import { Person } from '../datasources/typeorm/entities/person.model';
 
-export default class Dataloader {
+export default class DataloaderService {
   constructor(private datasources: IDatasources) {}
 
   public generateDataloaders = (): IDataloaders => {
     const {
-      Country: CountryEntity
+      Country: CountryEntity,
+      Player: PlayerEntity,
+      Person: PersonEntity,
     } = this.datasources.typeORM.entities;
 
     return {
       countryLoader: this.getEntityLoader<Country>(
         CountryEntity, (parentFieldValues: any[]) => ({ where: { id: In(parentFieldValues) } }), 'id'
+      ),
+      playerLoader: this.getEntityLoader<Player>(
+        PlayerEntity, (parentFieldValues: any[]) => ({ where: { personId: In(parentFieldValues) } }), 'personId'
+      ),
+      personLoader: this.getEntityLoader<Person>(
+        PersonEntity, (parentFieldValues: any[]) => ({ where: { id: In(parentFieldValues) } }), 'id'
       ),
     };
   }
@@ -24,7 +34,7 @@ export default class Dataloader {
     findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => {
-    return new DataloaderLibrary(
+    return new Dataloader(
       this.getLoader(entity, findOptions, filterBy)
     );
   }
@@ -34,8 +44,12 @@ export default class Dataloader {
     findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => async (parentFieldValues: number[]) => {
+    console.log('getLoader()');
+    console.log('parentFieldValues:', parentFieldValues);
+    console.log('filterBy:', filterBy);
     const { connection } = this.datasources.typeORM;
     const response = await connection.manager.find<Entity>(entity, findOptions(parentFieldValues));
+    console.log('response:', response);
     return parentFieldValues.map((value) => response.filter((row: Entity) => row[filterBy] === value));
   }
 }

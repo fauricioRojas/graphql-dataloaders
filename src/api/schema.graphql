@@ -2,8 +2,12 @@
 
 # import * from "./club/schemas/club.graphql"
 
+# import * from "./player/schemas/player.graphql"
+
 type Query {
   people(take: Int): [Person!]!
   
   clubs(take: Int): [Club!]!
+
+  players(take: Int): [Player!]!
 }

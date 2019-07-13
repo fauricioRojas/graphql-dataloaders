@@ -19,6 +19,12 @@ export class Club {
   })
   public id: number;
 
+  @Column({
+    type: 'int',
+    name: 'country_id'
+  })
+  public countryId: number;
+
   @ManyToOne(
     type => Country,
     country => country.clubs,
@@ -40,4 +46,6 @@ export class Club {
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   public clubPlayers: Promise<ClubPlayer[]>;
+
+  public static keyFields: Array<keyof Club> = ['id', 'countryId'];
 }
