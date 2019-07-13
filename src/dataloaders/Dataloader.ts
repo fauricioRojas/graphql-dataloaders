@@ -21,7 +21,7 @@ export default class Dataloader {
 
   private getEntityLoader = <Entity>(
     entity: ObjectType<Entity>,
-    findOptions: (keys: number[]) => FindManyOptions,
+    findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => {
     return new DataloaderLibrary(
@@ -31,7 +31,7 @@ export default class Dataloader {
 
   private getLoader = <Entity>(
     entity: ObjectType<Entity>,
-    findOptions: (keys: number[]) => FindManyOptions<Entity>,
+    findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => async (parentFieldValues: number[]) => {
     const { connection } = this.datasources.typeORM;
