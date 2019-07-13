@@ -1,29 +1,18 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { IContext } from '../../../../core/context';
+import { Person } from '../../../../datasources/typeorm/entities/person.model';
+import { PeopleQueryArgs } from '../../../../types/schema';
 
-interface IPerson {
-  id: number;
-  name: string;
-}
-
-const peopleData: IPerson[] = [
-  {
-    id: 1,
-    name: 'Fauricio'
-  },
-  {
-    id: 2,
-    name: 'Johnn'
-  }
-];
-
-const people = (
+const people = async (
   parent,
-  args,
+  { take }: PeopleQueryArgs,
   context: IContext,
   info: GraphQLResolveInfo
-): IPerson[] => {
-  return peopleData;
+): Promise<Person[]> => {
+  const { connection, entities } = context.datasources.typeORM;
+  return connection.manager.find(entities.Person, {
+    take
+  });
 };
 
 export default people;

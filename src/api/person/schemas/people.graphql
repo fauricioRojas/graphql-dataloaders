@@ -1,4 +1,0 @@
-type People {
-  id: Int!
-  name: String!
-}

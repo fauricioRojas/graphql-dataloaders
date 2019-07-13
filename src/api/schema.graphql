@@ -1,5 +1,9 @@
-# import * from "./person/schemas/people.graphql"
+# import * from "./person/schemas/person.graphql"
+
+# import * from "./club/schemas/club.graphql"
 
 type Query {
-  people(take: Int): [People!]!
+  people(take: Int): [Person!]!
+  
+  clubs(take: Int): [Club!]!
 }

@@ -1,0 +1,10 @@
+# import * from "./../../club/schemas/club.graphql"
+# import * from "./../../person/schemas/person.graphql"
+
+type Country {
+  id: Int!
+  name: String!
+  code: String!
+  clubs: [Club]!
+  people: [Person]!
+}

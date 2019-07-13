@@ -1,0 +1,7 @@
+# import * from "./../../country/schemas/country.graphql"
+
+type Club {
+  id: Int!
+  country: Country!
+  name: String!
+}

@@ -3,6 +3,7 @@ import { GraphQLServer, PubSub, Options } from 'graphql-yoga';
 import { resolvers } from './core/resolvers.index';
 import { getContext } from './core/context';
 import { middlewares } from './middlewares';
+import 'reflect-metadata';
 
 const pubsub = new PubSub();
 const server = new GraphQLServer({
