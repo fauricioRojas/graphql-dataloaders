@@ -1,11 +1,13 @@
 import { PubSub } from 'graphql-yoga';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import { IDatasources, getDatasources } from '../datasources';
+import Dataloader from '../dataloaders/Dataloader';
+import { IDataloaders } from '../dataloaders/dataloader.interface';
 
 export interface IContext {
   request: any;
   datasources: IDatasources;
-  services: any;
+  dataloaders: IDataloaders;
   pubsub: PubSub;
 }
 
@@ -14,7 +16,7 @@ export const getContext = (pubsub: PubSub) => (req: ContextParameters): IContext
   return {
     request: req.request,
     datasources,
-    services: {},
+    dataloaders: new Dataloader(datasources).generateDataloaders(),
     pubsub,
   };
 };

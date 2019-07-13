@@ -19,6 +19,12 @@ export class Person {
   })
   public id: number;
 
+  @Column({
+    type: 'int',
+    name: 'country_id'
+  })
+  public countryId: number;
+
   @ManyToOne(
     type => Country,
     country => country.people,
@@ -47,4 +53,6 @@ export class Person {
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   public players: Promise<Player[]>;
+
+  public static keyFields: Array<keyof Person> = ['id', 'countryId'];
 }
