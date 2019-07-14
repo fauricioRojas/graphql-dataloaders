@@ -30,7 +30,7 @@ export class Position {
 
   @OneToMany(
     () => PlayerPosition,
-    playerPosition => playerPosition.player
+    playerPosition => playerPosition.position
   )
   public playerPositions: Promise<PlayerPosition[]>;
 }
