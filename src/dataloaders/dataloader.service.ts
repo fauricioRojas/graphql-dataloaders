@@ -33,10 +33,10 @@ export default class DataloaderService {
       personLoader: this.getEntityLoader<Person>(
         PersonEntity, (parentFieldValues: any[]) => ({ where: { id: In(parentFieldValues) } }), 'id'
       ),
-      personInCountryLoader: this.getEntityLoader<Person>(
+      personCountryLoader: this.getEntityLoader<Person>(
         PersonEntity, (parentFieldValues: any[]) => ({ where: { countryId: In(parentFieldValues) } }), 'countryId'
       ),
-      positionInPlayerLoader: this.getEntityLoader<PlayerPosition>(
+      playerPositionLoader: this.getEntityLoader<PlayerPosition>(
         PlayerPositionEntity, (parentFieldValues: any[]) => ({ where: { playerId: In(parentFieldValues) } }), 'playerId'
       ),
       clubLoader: this.getEntityLoader<Club>(
@@ -63,12 +63,8 @@ export default class DataloaderService {
     findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => async (parentFieldValues: number[]) => {
-    console.log('getLoader()');
-    console.log('parentFieldValues:', parentFieldValues);
-    console.log('filterBy:', filterBy);
     const { connection } = this.datasources.typeORM;
     const response = await connection.manager.find<Entity>(entity, findOptions(parentFieldValues));
-    console.log('response:', response);
     return parentFieldValues.map((value) => response.filter((row: Entity) => row[filterBy] === value));
   }
 }

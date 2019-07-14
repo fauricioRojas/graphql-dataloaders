@@ -27,7 +27,7 @@ export class PlayerPosition {
 
   @ManyToOne(
     () => Player,
-    player => player.playerPositions
+    player => player.positions
   )
   @JoinColumn({ name: 'player_id' })
   public player: Promise<Player | null>;
@@ -40,7 +40,7 @@ export class PlayerPosition {
 
   @ManyToOne(
     () => Position,
-    position => position.playerPositions
+    position => position.players
   )
   @JoinColumn({ name: 'position_id' })
   public position: Promise<Position | null>;

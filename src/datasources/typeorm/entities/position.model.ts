@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PlayerPosition } from './player-position.model';
+import { Player } from './player.model';
 
 @Entity('position', { schema: 'soccer' })
 export class Position {
@@ -32,5 +33,5 @@ export class Position {
     () => PlayerPosition,
     playerPosition => playerPosition.position
   )
-  public playerPositions: Promise<PlayerPosition[]>;
+  public players: Promise<Player[]>;
 }

@@ -19,7 +19,7 @@ export const resolvers = {
   },
   Player: {
     person: generateDataloaderResolver('personLoader', 'personId', false),
-    playerPositions: generateDataloaderResolver('positionInPlayerLoader', 'id', true),
+    playerPositions: generateDataloaderResolver('playerPositionLoader', 'id', true),
   },
   Club: {
     country: generateDataloaderResolver('countryLoader', 'countryId', false),
@@ -27,6 +27,6 @@ export const resolvers = {
   },
   Country: {
     clubs: generateDataloaderResolver('clubLoader', 'id', true),
-    people: generateDataloaderResolver('personInCountryLoader', 'id', true),
+    people: generateDataloaderResolver('personCountryLoader', 'id', true),
   }
 };

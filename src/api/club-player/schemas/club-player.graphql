@@ -5,6 +5,6 @@ type ClubPlayer {
   id: Int!
   club: Club!
   player: Player!
-  startedAt: String!
+  startedAt: String
   finishedAt: String
 }

@@ -10,6 +10,8 @@ import {
 import { Person } from './person.model';
 import { ClubPlayer } from './club-player.model';
 import { PlayerPosition } from './player-position.model';
+import { Position } from './position.model';
+import { Club } from './club.model';
 
 @Entity('player', { schema: 'soccer' })
 @Index('person_id_idx', ['person'])
@@ -47,13 +49,13 @@ export class Player {
     () => ClubPlayer,
     clubPlayer => clubPlayer.player
   )
-  public clubs: Promise<ClubPlayer[]>;
+  public clubs: Promise<Club[]>;
 
   @OneToMany(
     () => PlayerPosition,
     playerPosition => playerPosition.player
   )
-  public playerPositions: Promise<PlayerPosition[]>;
+  public positions: Promise<Position[]>;
 
   public static keyFields: Array<keyof Player> = ['id', 'personId'];
 }

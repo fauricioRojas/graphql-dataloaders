@@ -27,8 +27,7 @@ export class ClubPlayer {
 
   @ManyToOne(
     () => Club,
-    club => club.players,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    club => club.players
   )
   @JoinColumn({ name: 'club_id' })
   public club: Promise<Club | null>;
@@ -41,8 +40,7 @@ export class ClubPlayer {
 
   @ManyToOne(
     () => Player,
-    player => player.clubs,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    player => player.clubs
   )
   @JoinColumn({ name: 'player_id' })
   public player: Promise<Player | null>;
