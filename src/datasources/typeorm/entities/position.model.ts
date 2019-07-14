@@ -2,7 +2,7 @@ import {
   Column,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PlayerPosition } from './player-position.model';
 
@@ -29,9 +29,8 @@ export class Position {
   public code: string;
 
   @OneToMany(
-    type => PlayerPosition,
-    playerPosition => playerPosition.position,
-    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => PlayerPosition,
+    playerPosition => playerPosition.player
   )
   public playerPositions: Promise<PlayerPosition[]>;
 }

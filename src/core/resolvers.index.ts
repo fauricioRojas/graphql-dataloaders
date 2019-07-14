@@ -19,10 +19,11 @@ export const resolvers = {
   },
   Player: {
     person: generateDataloaderResolver('personLoader', 'personId', false),
+    playerPositions: generateDataloaderResolver('positionInPlayerLoader', 'id', true),
   },
   Club: {
     country: generateDataloaderResolver('countryLoader', 'countryId', false),
-    players: generateDataloaderResolver('clubPlayerLoader', 'id', true),
+    clubPlayers: generateDataloaderResolver('clubPlayerLoader', 'id', true),
   },
   Country: {
     clubs: generateDataloaderResolver('clubLoader', 'id', true),

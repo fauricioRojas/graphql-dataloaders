@@ -6,7 +6,9 @@ import { Player } from '../datasources/typeorm/entities/player.model';
 import * as Dataloader from 'dataloader';
 import { Person } from '../datasources/typeorm/entities/person.model';
 import { Club } from '../datasources/typeorm/entities/club.model';
+import { Position } from '../datasources/typeorm/entities/position.model';
 import { ClubPlayer } from '../datasources/typeorm/entities/club-player.model';
+import { PlayerPosition } from '../datasources/typeorm/entities/player-position.model';
 
 export default class DataloaderService {
   constructor(private datasources: IDatasources) {}
@@ -18,6 +20,7 @@ export default class DataloaderService {
       Person: PersonEntity,
       Club: ClubEntity,
       ClubPlayer: ClubPlayerEntity,
+      PlayerPosition: PlayerPositionEntity,
     } = this.datasources.typeORM.entities;
 
     return {
@@ -32,6 +35,9 @@ export default class DataloaderService {
       ),
       personInCountryLoader: this.getEntityLoader<Person>(
         PersonEntity, (parentFieldValues: any[]) => ({ where: { countryId: In(parentFieldValues) } }), 'countryId'
+      ),
+      positionInPlayerLoader: this.getEntityLoader<PlayerPosition>(
+        PlayerPositionEntity, (parentFieldValues: any[]) => ({ where: { playerId: In(parentFieldValues) } }), 'playerId'
       ),
       clubLoader: this.getEntityLoader<Club>(
         ClubEntity, (parentFieldValues: any[]) => ({ where: { countryId: In(parentFieldValues) } }), 'countryId'

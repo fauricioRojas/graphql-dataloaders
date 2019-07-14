@@ -1,5 +1,6 @@
 import {
   Entity,
+  Column,
   Index,
   JoinColumn,
   ManyToOne,
@@ -18,18 +19,28 @@ export class PlayerPosition {
   })
   public id: number;
 
+  @Column({
+    type: 'int',
+    name: 'player_id'
+  })
+  public playerId: number;
+
   @ManyToOne(
-    type => Player,
-    player => player.playerPositions,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => Player,
+    player => player.playerPositions
   )
   @JoinColumn({ name: 'player_id' })
   public player: Promise<Player | null>;
 
+  @Column({
+    type: 'int',
+    name: 'position_id'
+  })
+  public positionId: number;
+
   @ManyToOne(
-    type => Position,
-    position => position.playerPositions,
-    { nullable: false, onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    () => Position,
+    position => position.playerPositions
   )
   @JoinColumn({ name: 'position_id' })
   public position: Promise<Position | null>;

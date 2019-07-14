@@ -1,0 +1,8 @@
+# import * from "./../../player/schemas/player.graphql"
+# import * from "./../../position/schemas/position.graphql"
+
+type PlayerPosition {
+  id: Int!
+  player: Player!
+  position: Position!
+}

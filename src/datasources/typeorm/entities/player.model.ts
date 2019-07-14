@@ -4,7 +4,6 @@ import {
   Index,
   JoinColumn,
   OneToOne,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -52,8 +51,7 @@ export class Player {
 
   @OneToMany(
     () => PlayerPosition,
-    playerPosition => playerPosition.player,
-    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+    playerPosition => playerPosition.position
   )
   public playerPositions: Promise<PlayerPosition[]>;
 

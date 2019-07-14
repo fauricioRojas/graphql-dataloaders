@@ -1,0 +1,10 @@
+# import * from "./../../club/schemas/club.graphql"
+# import * from "./../../player/schemas/player.graphql"
+
+type ClubPlayer {
+  id: Int!
+  club: Club!
+  player: Player!
+  startedAt: String!
+  finishedAt: String
+}

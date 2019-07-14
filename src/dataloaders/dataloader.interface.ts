@@ -5,6 +5,7 @@ export interface IDataloaders {
   playerLoader: Dataloader<any, any>;
   personLoader: Dataloader<any, any>;
   personInCountryLoader: Dataloader<any, any>;
+  positionInPlayerLoader: Dataloader<any, any>;
   clubLoader: Dataloader<any, any>;
   clubPlayerLoader: Dataloader<any, any>;
 }
