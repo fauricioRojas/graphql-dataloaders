@@ -1,11 +1,12 @@
 import * as Dataloader from 'dataloader';
+import { Country } from '../datasources/typeorm/entities/country.model';
 
 export interface IDataloaders {
-  countryLoader: Dataloader<any, any>;
-  playerLoader: Dataloader<any, any>;
-  personLoader: Dataloader<any, any>;
-  personCountryLoader: Dataloader<any, any>;
-  playerPositionLoader: Dataloader<any, any>;
-  clubLoader: Dataloader<any, any>;
-  clubPlayerLoader: Dataloader<any, any>;
+  countryLoader: Dataloader<number, Country[]>;
+  playerLoader: Dataloader<number, any>;
+  personLoader: Dataloader<number, any>;
+  personCountryLoader: Dataloader<number, any>;
+  playerPositionLoader: Dataloader<number, any>;
+  clubLoader: Dataloader<number, any>;
+  clubPlayerLoader: Dataloader<number, any>;
 }

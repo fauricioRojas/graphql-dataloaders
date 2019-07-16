@@ -25,32 +25,46 @@ export default class DataloaderService {
 
     return {
       countryLoader: this.getEntityLoader<Country>(
-        CountryEntity, (parentFieldValues: any[]) => ({ where: { id: In(parentFieldValues) } }), 'id'
+        CountryEntity,
+        (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
+        'id'
       ),
       playerLoader: this.getEntityLoader<Player>(
-        PlayerEntity, (parentFieldValues: any[]) => ({ where: { personId: In(parentFieldValues) } }), 'personId'
+        PlayerEntity,
+        (parentFieldValues: number[]) => ({ where: { personId: In(parentFieldValues) } }),
+        'personId'
       ),
       personLoader: this.getEntityLoader<Person>(
-        PersonEntity, (parentFieldValues: any[]) => ({ where: { id: In(parentFieldValues) } }), 'id'
+        PersonEntity,
+        (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
+        'id'
       ),
       personCountryLoader: this.getEntityLoader<Person>(
-        PersonEntity, (parentFieldValues: any[]) => ({ where: { countryId: In(parentFieldValues) } }), 'countryId'
+        PersonEntity,
+        (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
+        'countryId'
       ),
       playerPositionLoader: this.getEntityLoader<PlayerPosition>(
-        PlayerPositionEntity, (parentFieldValues: any[]) => ({ where: { playerId: In(parentFieldValues) } }), 'playerId'
+        PlayerPositionEntity,
+        (parentFieldValues: number[]) => ({ where: { playerId: In(parentFieldValues) } }),
+        'playerId'
       ),
       clubLoader: this.getEntityLoader<Club>(
-        ClubEntity, (parentFieldValues: any[]) => ({ where: { countryId: In(parentFieldValues) } }), 'countryId'
+        ClubEntity,
+        (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
+        'countryId'
       ),
       clubPlayerLoader: this.getEntityLoader<ClubPlayer>(
-        ClubPlayerEntity, (parentFieldValues: any[]) => ({ where: { clubId: In(parentFieldValues) } }), 'clubId'
+        ClubPlayerEntity,
+        (parentFieldValues: number[]) => ({ where: { clubId: In(parentFieldValues) } }),
+        'clubId'
       ),
     };
   }
 
   private getEntityLoader = <Entity>(
     entity: ObjectType<Entity>,
-    findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
+    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => {
     return new Dataloader(
@@ -60,7 +74,7 @@ export default class DataloaderService {
 
   private getLoader = <Entity>(
     entity: ObjectType<Entity>,
-    findOptions: (parentFieldValues: any[]) => FindManyOptions<Entity>,
+    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
     filterBy: string
   ) => async (parentFieldValues: number[]) => {
     const { connection } = this.datasources.typeORM;
