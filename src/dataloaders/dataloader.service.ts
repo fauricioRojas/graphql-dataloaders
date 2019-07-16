@@ -6,7 +6,6 @@ import { Player } from '../datasources/typeorm/entities/player.model';
 import * as Dataloader from 'dataloader';
 import { Person } from '../datasources/typeorm/entities/person.model';
 import { Club } from '../datasources/typeorm/entities/club.model';
-import { Position } from '../datasources/typeorm/entities/position.model';
 import { ClubPlayer } from '../datasources/typeorm/entities/club-player.model';
 import { PlayerPosition } from '../datasources/typeorm/entities/player-position.model';
 
@@ -24,61 +23,80 @@ export default class DataloaderService {
     } = this.datasources.typeORM.entities;
 
     return {
-      countryLoader: this.getEntityLoader<Country>(
+      countryLoader: this.getLoader<Country>(
         CountryEntity,
         (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
         'id'
       ),
-      playerLoader: this.getEntityLoader<Player>(
+      playerLoader: this.getLoader<Player>(
         PlayerEntity,
         (parentFieldValues: number[]) => ({ where: { personId: In(parentFieldValues) } }),
         'personId'
       ),
-      personLoader: this.getEntityLoader<Person>(
+      personLoader: this.getLoader<Person>(
         PersonEntity,
         (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
         'id'
       ),
-      personCountryLoader: this.getEntityLoader<Person>(
+      personCountryLoader: this.getLoader<Person>(
         PersonEntity,
         (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
         'countryId'
       ),
-      playerPositionLoader: this.getEntityLoader<PlayerPosition>(
+      playerPositionLoader: this.getLoader<PlayerPosition>(
         PlayerPositionEntity,
         (parentFieldValues: number[]) => ({ where: { playerId: In(parentFieldValues) } }),
         'playerId'
       ),
-      clubLoader: this.getEntityLoader<Club>(
+      clubLoader: this.getLoader<Club>(
         ClubEntity,
         (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
         'countryId'
       ),
-      clubPlayerLoader: this.getEntityLoader<ClubPlayer>(
+      clubPlayerLoader: this.getLoaderWithJoin<ClubPlayer, Player>(
         ClubPlayerEntity,
-        (parentFieldValues: number[]) => ({ where: { clubId: In(parentFieldValues) } }),
-        'clubId'
+        (parentFieldValues: number[]) => ({
+          where: { clubId: In(parentFieldValues) },
+          relations: ['player']
+        }),
+        'clubId',
+        '__player__'
       ),
     };
-  }
-
-  private getEntityLoader = <Entity>(
-    entity: ObjectType<Entity>,
-    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
-    filterBy: string
-  ) => {
-    return new Dataloader(
-      this.getLoader(entity, findOptions, filterBy)
-    );
   }
 
   private getLoader = <Entity>(
     entity: ObjectType<Entity>,
     findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
     filterBy: string
-  ) => async (parentFieldValues: number[]) => {
-    const { connection } = this.datasources.typeORM;
-    const response = await connection.manager.find<Entity>(entity, findOptions(parentFieldValues));
-    return parentFieldValues.map((value) => response.filter((row: Entity) => row[filterBy] === value));
-  }
+  ) => new Dataloader(
+    async (parentFieldValues: number[]) => {
+      const { connection } = this.datasources.typeORM;
+      const response = await connection.manager
+        .find<Entity>(entity, findOptions(parentFieldValues));
+      return parentFieldValues
+        .map((value) => response.filter((row: Entity) => row[filterBy] === value));
+    }
+  )
+
+  private getLoaderWithJoin = <Entity, ChildEntity>(
+    entity: ObjectType<Entity>,
+    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
+    filterBy: string,
+    childFilterKey: string
+  ) => new Dataloader(
+    async (parentFieldValues: number[]) => {
+      const { connection } = this.datasources.typeORM;
+      const response = await connection.manager
+        .find<Entity>(entity, findOptions(parentFieldValues));
+      return parentFieldValues
+        .map((value: number) => response
+          .reduce((rows: ChildEntity[], row: Entity) => (
+            row[filterBy] === value
+              ? rows.concat(row[childFilterKey])
+              : rows
+          ), [])
+        );
+    }
+  )
 }

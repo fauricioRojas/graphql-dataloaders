@@ -23,7 +23,7 @@ export const resolvers = {
   },
   Club: {
     country: generateDataloaderResolver('countryLoader', 'countryId', false),
-    clubPlayers: generateDataloaderResolver('clubPlayerLoader', 'id', true),
+    players: generateDataloaderResolver('clubPlayerLoader', 'id', true),
   },
   Country: {
     clubs: generateDataloaderResolver('clubLoader', 'id', true),

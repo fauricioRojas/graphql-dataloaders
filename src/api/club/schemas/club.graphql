@@ -1,9 +1,9 @@
 # import * from "./../../country/schemas/country.graphql"
-# import * from "./../../club-player/schemas/club-player.graphql"
+# import * from "./../../player/schemas/player.graphql"
 
 type Club {
   id: Int!
   country: Country!
   name: String!
-  clubPlayers: [ClubPlayer]!
+  players: [Player]!
 }
