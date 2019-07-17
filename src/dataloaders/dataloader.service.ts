@@ -1,13 +1,21 @@
-import { IDataloaders } from './dataloader.interface';
-import { In, FindManyOptions, ObjectType } from 'typeorm';
-import { IDatasources } from '../datasources/index';
-import { Country } from '../datasources/typeorm/entities/country.model';
-import { Player } from '../datasources/typeorm/entities/player.model';
 import * as Dataloader from 'dataloader';
-import { Person } from '../datasources/typeorm/entities/person.model';
+import { In, FindManyOptions, ObjectType } from 'typeorm';
+
 import { Club } from '../datasources/typeorm/entities/club.model';
 import { ClubPlayer } from '../datasources/typeorm/entities/club-player.model';
+import { Country } from '../datasources/typeorm/entities/country.model';
+import { IDataloaders } from './dataloader.interface';
+import { IDatasources } from '../datasources/index';
+import { Person } from '../datasources/typeorm/entities/person.model';
+import { Player } from '../datasources/typeorm/entities/player.model';
 import { PlayerPosition } from '../datasources/typeorm/entities/player-position.model';
+
+interface ILoader<Entity> {
+  entity: ObjectType<Entity>;
+  findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>;
+  filterBy: string;
+  childFilterKey?: string;
+}
 
 export default class DataloaderService {
   constructor(private datasources: IDatasources) {}
@@ -23,80 +31,81 @@ export default class DataloaderService {
     } = this.datasources.typeORM.entities;
 
     return {
-      countryLoader: this.getLoader<Country>(
-        CountryEntity,
-        (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
-        'id'
-      ),
-      playerLoader: this.getLoader<Player>(
-        PlayerEntity,
-        (parentFieldValues: number[]) => ({ where: { personId: In(parentFieldValues) } }),
-        'personId'
-      ),
-      personLoader: this.getLoader<Person>(
-        PersonEntity,
-        (parentFieldValues: number[]) => ({ where: { id: In(parentFieldValues) } }),
-        'id'
-      ),
-      personCountryLoader: this.getLoader<Person>(
-        PersonEntity,
-        (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
-        'countryId'
-      ),
-      playerPositionLoader: this.getLoader<PlayerPosition>(
-        PlayerPositionEntity,
-        (parentFieldValues: number[]) => ({ where: { playerId: In(parentFieldValues) } }),
-        'playerId'
-      ),
-      clubLoader: this.getLoader<Club>(
-        ClubEntity,
-        (parentFieldValues: number[]) => ({ where: { countryId: In(parentFieldValues) } }),
-        'countryId'
-      ),
-      clubPlayerLoader: this.getLoaderWithJoin<ClubPlayer, Player>(
-        ClubPlayerEntity,
-        (parentFieldValues: number[]) => ({
+      countryLoader: this.getLoader<Country>({
+        entity: CountryEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { id: In(parentFieldValues) }
+        }),
+        filterBy: 'id',
+      }),
+      playerLoader: this.getLoader<Player>({
+        entity: PlayerEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { personId: In(parentFieldValues) }
+        }),
+        filterBy: 'personId',
+      }),
+      personLoader: this.getLoader<Person>({
+        entity: PersonEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { id: In(parentFieldValues) }
+        }),
+        filterBy: 'id',
+      }),
+      personCountryLoader: this.getLoader<Person>({
+        entity: PersonEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { countryId: In(parentFieldValues) }
+        }),
+        filterBy: 'countryId',
+      }),
+      playerPositionLoader: this.getLoader<PlayerPosition>({
+        entity: PlayerPositionEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { playerId: In(parentFieldValues) }
+        }),
+        filterBy: 'playerId'
+      }),
+      clubLoader: this.getLoader<Club>({
+        entity: ClubEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { countryId: In(parentFieldValues) }
+        }),
+        filterBy: 'countryId'
+      }),
+      clubPlayerLoader: this.getLoader<ClubPlayer>({
+        entity: ClubPlayerEntity,
+        findOptions: (parentFieldValues: number[]) => ({
           where: { clubId: In(parentFieldValues) },
           relations: ['player']
         }),
-        'clubId',
-        '__player__'
-      ),
+        filterBy: 'clubId',
+        childFilterKey: 'player'
+      }),
     };
   }
 
-  private getLoader = <Entity>(
-    entity: ObjectType<Entity>,
-    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
-    filterBy: string
-  ) => new Dataloader(
+  private getLoader = <Entity>({
+    entity,
+    findOptions,
+    filterBy,
+    childFilterKey
+  }: ILoader<Entity>) => new Dataloader(
     async (parentFieldValues: number[]) => {
       const { connection } = this.datasources.typeORM;
-      const response = await connection.manager
-        .find<Entity>(entity, findOptions(parentFieldValues));
-      return parentFieldValues
-        .map((value) => response.filter((row: Entity) => row[filterBy] === value));
-    }
-  )
-
-  private getLoaderWithJoin = <Entity, ChildEntity>(
-    entity: ObjectType<Entity>,
-    findOptions: (parentFieldValues: number[]) => FindManyOptions<Entity>,
-    filterBy: string,
-    childFilterKey: string
-  ) => new Dataloader(
-    async (parentFieldValues: number[]) => {
-      const { connection } = this.datasources.typeORM;
-      const response = await connection.manager
-        .find<Entity>(entity, findOptions(parentFieldValues));
-      return parentFieldValues
-        .map((value: number) => response
-          .reduce((rows: ChildEntity[], row: Entity) => (
+      const response = await connection.manager.find<Entity>(entity, findOptions(parentFieldValues));
+      if (childFilterKey) {
+        return parentFieldValues.map((value: number) => (
+          response.reduce((rows: any[], row: Entity) => (
             row[filterBy] === value
               ? rows.concat(row[childFilterKey])
               : rows
           ), [])
-        );
+        ));
+      }
+      return parentFieldValues.map((value: number) => (
+        response.filter((row: Entity) => row[filterBy] === value))
+      );
     }
   )
 }

@@ -1,9 +1,9 @@
 import clubModule from '../api/club/resolvers/club.index';
+import countryModule from '../api/country/resolvers/country.index';
 import personModule from '../api/person/resolvers/person.index';
 import playerModule from '../api/player/resolvers/player.index';
-import countryModule from '../api/country/resolvers/country.index';
 import positionModule from '../api/position/resolvers/position.index';
-import { generateDataloaderResolver } from '../dataloaders';
+import { generateDataloaderResolver } from '../dataloaders/dataloader-resolver.helper';
 
 export const resolvers = {
   Query: {

@@ -1,5 +1,6 @@
-import { IContext } from '../core/context';
 import { GraphQLResolveInfo } from 'graphql';
+
+import { IContext } from '../core/context';
 import { IDataloaders } from './dataloader.interface';
 
 export const generateDataloaderResolver = (
