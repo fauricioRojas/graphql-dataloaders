@@ -52,6 +52,13 @@ export default class DataloaderService {
         }),
         filterBy: 'id',
       }),
+      clubLoader: this.getLoader<Club>({
+        entity: ClubEntity,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { countryId: In(parentFieldValues) }
+        }),
+        filterBy: 'countryId'
+      }),
       personCountryLoader: this.getLoader<Person>({
         entity: PersonEntity,
         findOptions: (parentFieldValues: number[]) => ({
@@ -67,13 +74,6 @@ export default class DataloaderService {
         }),
         filterBy: 'playerId',
         childFilterKey: 'position'
-      }),
-      clubLoader: this.getLoader<Club>({
-        entity: ClubEntity,
-        findOptions: (parentFieldValues: number[]) => ({
-          where: { countryId: In(parentFieldValues) }
-        }),
-        filterBy: 'countryId'
       }),
       clubPlayerLoader: this.getLoader<ClubPlayer>({
         entity: ClubPlayerEntity,
