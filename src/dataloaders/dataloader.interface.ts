@@ -1,8 +1,8 @@
 import * as Dataloader from 'dataloader';
-import { IContext } from '../core/context';
+import { GraphQLResolveInfo } from 'graphql';
 
 export interface IBatchLoaderParams {
-  context: IContext;
+  info: GraphQLResolveInfo;
   id: number;
 }
 

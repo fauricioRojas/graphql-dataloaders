@@ -16,7 +16,7 @@ export const generateDataloaderResolver = (
   ) => {
     const records = await context.dataloaders[dataloader].load({
       id: parent[parentField],
-      context
+      info
     });
     return multiple ? records : records[0];
   }
