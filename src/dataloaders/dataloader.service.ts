@@ -62,9 +62,11 @@ export default class DataloaderService {
       playerPositionLoader: this.getLoader<PlayerPosition>({
         entity: PlayerPositionEntity,
         findOptions: (parentFieldValues: number[]) => ({
-          where: { playerId: In(parentFieldValues) }
+          where: { playerId: In(parentFieldValues) },
+          relations: ['position'],
         }),
-        filterBy: 'playerId'
+        filterBy: 'playerId',
+        childFilterKey: 'position'
       }),
       clubLoader: this.getLoader<Club>({
         entity: ClubEntity,
@@ -77,7 +79,7 @@ export default class DataloaderService {
         entity: ClubPlayerEntity,
         findOptions: (parentFieldValues: number[]) => ({
           where: { clubId: In(parentFieldValues) },
-          relations: ['player']
+          relations: ['player'],
         }),
         filterBy: 'clubId',
         childFilterKey: 'player'

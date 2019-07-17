@@ -1,10 +1,10 @@
 # import * from "./../../person/schemas/person.graphql"
-# import * from "./../../player-position/schemas/player-position.graphql"
+# import * from "./../../position/schemas/position.graphql"
 
 type Player {
   id: Int!
   foot: String!
   active: Boolean!
   person: Person!
-  playerPositions: [PlayerPosition!]!
+  positions: [Position!]!
 }
