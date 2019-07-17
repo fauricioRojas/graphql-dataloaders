@@ -1,12 +1,18 @@
 import * as Dataloader from 'dataloader';
+import { IContext } from '../core/context';
+
+export interface IBatchLoaderParams {
+  context: IContext;
+  id: number;
+}
 
 export interface IDataloaders {
-  countryLoader: Dataloader<number, any>;
-  playerLoader: Dataloader<number, any>;
-  personLoader: Dataloader<number, any>;
-  clubLoader: Dataloader<number, any>;
-  personCountryLoader: Dataloader<number, any>;
-  clubPlayerLoader: Dataloader<number, any>;
-  playerPositionLoader: Dataloader<number, any>;
-  positionPlayerLoader: Dataloader<number, any>;
+  countryLoader: Dataloader<IBatchLoaderParams, any>;
+  playerLoader: Dataloader<IBatchLoaderParams, any>;
+  personLoader: Dataloader<IBatchLoaderParams, any>;
+  clubLoader: Dataloader<IBatchLoaderParams, any>;
+  personCountryLoader: Dataloader<IBatchLoaderParams, any>;
+  clubPlayerLoader: Dataloader<IBatchLoaderParams, any>;
+  playerPositionLoader: Dataloader<IBatchLoaderParams, any>;
+  positionPlayerLoader: Dataloader<IBatchLoaderParams, any>;
 }

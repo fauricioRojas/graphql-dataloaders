@@ -14,7 +14,10 @@ export const generateDataloaderResolver = (
     context: IContext,
     info: GraphQLResolveInfo
   ) => {
-    const records = await context.dataloaders[dataloader].load(parent[parentField]);
+    const records = await context.dataloaders[dataloader].load({
+      id: parent[parentField],
+      context
+    });
     return multiple ? records : records[0];
   }
 );

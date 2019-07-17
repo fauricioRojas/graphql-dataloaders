@@ -4,7 +4,7 @@ import { In, FindManyOptions, ObjectType } from 'typeorm';
 import { Club } from '../datasources/typeorm/entities/club.model';
 import { ClubPlayer } from '../datasources/typeorm/entities/club-player.model';
 import { Country } from '../datasources/typeorm/entities/country.model';
-import { IDataloaders } from './dataloader.interface';
+import { IDataloaders, IBatchLoaderParams } from './dataloader.interface';
 import { IDatasources } from '../datasources/index';
 import { Person } from '../datasources/typeorm/entities/person.model';
 import { Player } from '../datasources/typeorm/entities/player.model';
@@ -102,7 +102,8 @@ export default class DataloaderService {
     filterBy,
     childFilterKey
   }: ILoader<Entity>) => new Dataloader(
-    async (parentFieldValues: number[]) => {
+    async (params: IBatchLoaderParams[]) => {
+      const parentFieldValues = params.map(({ id }: IBatchLoaderParams) => id);
       const { connection } = this.datasources.typeORM;
       const response = await connection.manager.find<Entity>(entity, findOptions(parentFieldValues));
       if (childFilterKey) {
