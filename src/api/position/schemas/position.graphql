@@ -1,5 +1,8 @@
+# import * from "./../../player/schemas/player.graphql"
+
 type Position {
   id: Int!
   name: String!
   code: String!
+  players: [Player!]!
 }

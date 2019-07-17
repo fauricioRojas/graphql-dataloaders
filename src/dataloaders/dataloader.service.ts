@@ -84,6 +84,15 @@ export default class DataloaderService {
         filterBy: 'clubId',
         childFilterKey: 'player'
       }),
+      positionPlayerLoader: this.getLoader<PlayerPosition>({
+        entity: PlayerPosition,
+        findOptions: (parentFieldValues: number[]) => ({
+          where: { positionId: In(parentFieldValues) },
+          relations: ['player'],
+        }),
+        filterBy: 'positionId',
+        childFilterKey: 'player'
+      }),
     };
   }
 

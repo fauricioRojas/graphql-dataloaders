@@ -28,5 +28,8 @@ export const resolvers = {
   Country: {
     clubs: generateDataloaderResolver('clubLoader', 'id', true),
     people: generateDataloaderResolver('personCountryLoader', 'id', true),
+  },
+  Position: {
+    players: generateDataloaderResolver('positionPlayerLoader', 'id', true),
   }
 };
