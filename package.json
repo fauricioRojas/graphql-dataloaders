@@ -44,6 +44,6 @@
     "graphql-codegen-typescript-server": "^0.18.2",
     "graphql-yoga": "^1.18.0",
     "mysql": "^2.17.1",
-    "typeorm": "^0.2.18"
+    "typeorm": "^0.2.25"
   }
 }
